@@ -51,4 +51,4 @@ for i in range (2):
     lista_alunos.append(dict_aluno)
 
 for a in lista_aluno:
-    print('Usuario cadastrado: ', a['sobrenome'], a['iadde'])
+    print('Usuario cadastrado: ', a['sobrenome'], a['idade'])
