@@ -72,6 +72,7 @@ def cadastrar(arquivo, nome, nascimento, cpf, uf, cidade, cep, bairro, rua, nume
         except:
             print('ERRO na hora de escrever os dados')
         else:
+            print(())
             print(f'Cliente {nome}, cadastrado com sucesso!')
             a.close()
 
