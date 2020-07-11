@@ -61,6 +61,6 @@ print(reduce(funcao, lista))# Multiplica todos os elementos da lista
 
 from functools import reduce
 
-lista = [1,1,2,2,3,3,4,4,4,10,10]
+lista = [1,1,2,2,3,3,4,4,4,10,10]# Compara numeros pares 
 funcao = lambda x,y : x ^ y
 print(reduce(funcao, lista))
