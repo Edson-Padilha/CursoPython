@@ -1,5 +1,7 @@
 # Função sempre retorna valor
 # Procedimento só printa na tela
+import os
+import time
 
 def mensagem(pValor):
     print(pValor)

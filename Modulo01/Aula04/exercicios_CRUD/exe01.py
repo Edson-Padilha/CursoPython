@@ -13,4 +13,7 @@
 # Tempo estimado: 35 minutos
 
 import menu
-import estoque
+while True:    
+    menu.crud (x = int(input('Digite sua opção: ')))
+    menu.time.sleep(2)   
+    menu.menu()
