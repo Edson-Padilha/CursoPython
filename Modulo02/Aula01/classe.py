@@ -62,13 +62,12 @@ class Veiculo:
                 print(self.subirMarcha())
                 for i in tqdm(range(2)):
                     sleep(0.5)
-                    #os.system('cls')
                 
             elif self.velocidade >= 40 and self.velocidade < 60 and self.marcha < 2:
                 print(self.subirMarcha())
                 for i in tqdm(range(4)):
                     sleep(1)
-            elif self.velocidade >= 60 and self.velocidade < 80 and self.marcha < 3:
+            elif self.velocidade >= 60 and self.velocidade < 80 and self.marcha < 2:
                 print(self.subirMarcha())
                 for i in tqdm(range(6)):
                     sleep(0.9)
@@ -78,7 +77,7 @@ class Veiculo:
                 for i in tqdm(range(8)):
                     sleep(0.8)
                     
-            elif self.velocidade >= 100 and self.velocidade < 120 and self.marcha < 5:
+            elif self.velocidade >= 100 and self.velocidade < 120 and self.marcha < 4:
                 print(self.subirMarcha())
                 for i in tqdm(range(10)):
                     sleep(0.7)
