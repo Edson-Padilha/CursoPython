@@ -17,25 +17,27 @@ from contaCorrente import ContaCorrente
 from contaPoupanca import ContaPoupanca
 from contaSalario import ContaSalario
 import funcoes as f
+import msgGerais as msg
 
 
 
-contasC = [] # conta corrente
-contasP = [] # conta poupanca
-contasS = [] # conta salario
+contasC = {} # conta corrente
+contasP = {} # conta poupanca
+contasS = {} # conta salario
 
 op = 0
 tipoConta = 0
 
 f.limpaTela()
-while op != 4:
-    print('Banco Proway\n'
-            '1 - Criar Conta\n'
+while op != 5:
+    print(' Banco Proway '.center(40,'='),
+            '\n1 - Criar Conta\n'
             '2 - Listar Conta\n'
             '3 - Excluir Conta\n'
-            '4 - Sair\n')
+            '4 - Operações\n'
+            '5 - Sair\n')
 
-    op = int(input('Informe a opção desejada: '))
+    op = int(input('Informe a opção desejada: ').center(40,' '))
 
     match op:
         case 1:
@@ -52,9 +54,10 @@ while op != 4:
                         if numero in contasC:
                             print('Conta corrente já existente')
                         else:
-                            contasC.append(numero)
+                            c = ContaCorrente(numero)
+                            contasC[c.conta] = 0
                             print('Conta corrente cadastrada com sucesso...')
-                        f.aguardaLimpa()
+                            del(c)
 
                     case 2:
                         if numero in contasS:
@@ -62,18 +65,20 @@ while op != 4:
                             f.aguardaLimpa()
 
                         else:
-                            contasS.append(numero)
-                            print('Conta salário cadastrado com sucesso')
-                            f.aguardaLimpa()
+                            c = ContaSalario(numero)
+                            contasS[c.conta] = 0
+                            print(msg.MSG_SUCESSO_CADASTRO)
+                            del(c)
 
                     case outraOpcao:
                         if numero in contasP:
                             print('Conta poupança já existente')
                             f.aguardaLimpa()
                         else:
-                            contasP.append(numero)
-                            print('Conta poupança cadastrada com sucesso')
-                            f.aguardaLimpa()
+                            c = ContaPoupanca(numero)
+                            contasP[c.conta] = 0
+                            print(msg.MSG_SUCESSO_CADASTRO)
+                            del(c)
         case 2:
             tipoConta = f.validaTipoConta()
             f.limpaTela()
@@ -107,8 +112,10 @@ while op != 4:
                         if len(numero) != 5:
                             print('Número inválido')
                         else:
-                            contasC.remove(numero)
+                            c = ContaCorrente(numero)
+                            contasC.pop(c.conta)
                             print('Conta excluída com sucesso')
+                            del(c)
                 case 2:
                     if len(contasS) == 0:
                         print('Não há contas cadastradas')
@@ -120,8 +127,10 @@ while op != 4:
                             if not numero in contasS:
                                 print('Conta inexistente')
                             else:
-                                contasS.remove(numero)
+                                c = ContaSalario(numero)
+                                contasS.pop(c.conta)
                                 print('Conta excluída com sucesso')
+                                del(c)
                 case outraCaso:
                     if len(contasP == 0):
                         print('Não há contas poupança cadastradas')
@@ -133,10 +142,41 @@ while op != 4:
                             if not numero in contasP:
                                 print('Conta inexistente')
                             else:
-                                contasP.remove(numero)
+                                c = ContaPoupanca(numero)
+                                contasP.pop(c.conta)
                                 print('Conta excluída com sucesso')
+                                del(c)
                     f.aguardaLimpa()
         case 4:
+            tipoConta = f.validaTipoConta()
+            match tipoConta:
+                case 1,3:
+                    op = f.menuOperacoes(tipoConta)
+                    match op:
+                        case 1:
+                            pass
+                        case 2:
+                            pass
+                        case 3:
+                            pass
+                        case 4:
+                            pass
+                        case outraCaso:
+                            break
+
+                case 2:
+                    op = f.menuOperacoes(tipoConta)
+                case outraCaso:
+                    op = f.menuOperacoes(tipoConta)
+
+                    match op:
+                        case 1:
+                            pass
+                        case 2:
+                            pass
+                        case outraCaso:
+                            break
+        case 5:
             print('Obrigado por usar o sistema')
             f.aguardaLimpa()
             break
