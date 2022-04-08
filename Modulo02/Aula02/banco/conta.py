@@ -23,7 +23,7 @@ class Conta():
             return msg.MSG_SUCESSO_SAQUE
             
         except:
-            return msgGerais.MSG_ERRO_SAQUE
+            return msg.MSG_ERRO_SAQUE
 
    
 

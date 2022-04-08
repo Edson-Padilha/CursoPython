@@ -12,7 +12,8 @@
 # Validar o numero da conta com 5 digitos existente na lista.
 # Tempo estimado: 40 min
 
-from funcoes import validaTipoConta
+
+from Aula02.banco.funcoes import ExisteSaldo
 from contaCorrente import ContaCorrente
 from contaPoupanca import ContaPoupanca
 from contaSalario import ContaSalario
@@ -38,43 +39,33 @@ while op != 5:
             '5 - Sair\n')
 
     op = int(input('Informe a opção desejada: ').center(40,' '))
-
+    f.limpaTela()
     match op:
         case 1:
-            tipoConta = f.validaTipoConta()
+            tipoConta = f.validaTipoConta(True)
             f.limpaTela()
             numero = input('Informe o número da conta com 5 digítos: ')
-            if len(numero) != 5:
-                print('Numero inválido!')
+            if (not f.EhContaValida(numero)):
                 f.aguardaLimpa()
             
             else:
                 match tipoConta:
                     case 1:
-                        if numero in contasC:
-                            print('Conta corrente já existente')
-                        else:
+                        if (not (f.ExisteConta(numero,contasC))):
                             c = ContaCorrente(numero)
                             contasC[c.conta] = 0
-                            print('Conta corrente cadastrada com sucesso...')
+                            print(msg.MSG_SUCESSO_CADASTRO)
                             del(c)
 
                     case 2:
-                        if numero in contasS:
-                            print('Conta salário já existente')
-                            f.aguardaLimpa()
-
-                        else:
+                        if (not (f.ExisteConta(numero,contasC,True))):
                             c = ContaSalario(numero)
                             contasS[c.conta] = 0
                             print(msg.MSG_SUCESSO_CADASTRO)
                             del(c)
 
                     case outraOpcao:
-                        if numero in contasP:
-                            print('Conta poupança já existente')
-                            f.aguardaLimpa()
-                        else:
+                        if (not (f.ExisteConta(numero,contasC))):
                             c = ContaPoupanca(numero)
                             contasP[c.conta] = 0
                             print(msg.MSG_SUCESSO_CADASTRO)
@@ -84,104 +75,142 @@ while op != 5:
             f.limpaTela()
             match tipoConta:
                 case 1:
-                    if len(contasC) == 0:
-                        print('Não há contas corrente cadastradas' )
-                    else:
+                    if (f.ExisteContaCadastrada(contasC,tipoConta)):
                         print(contasC)
                 case 2:
-                    if len(contasS) == 0:
-                        print('Não há contas salários cadastradas')
-                    else:
+                    if (f.ExisteContaCadastrada(contasC,tipoConta)):
                         print(contasS)
 
-                case outraCaso:
-                    if len(contasP) == 0:
-                        print('Não há contas poupança cadastradas')
-                    else:
+                case 3:
+                    if (f.ExisteContaCadastrada(contasC,tipoConta)):
                         print(contasP)
+                case outraCaso:
+                    print('Conta corrente')
+                    print(contasC)
+                    print('Conta salário')
+                    print(contasS)
+                    print('Conta poupança')
+                    print(contasP)
             f.aguardaLimpa()
+
         case 3:
             tipoConta = f.validaTipoConta()
             f.limpaTela()
             match tipoConta:
                 case 1:
-                    if len(contasC) == 0:
-                        print('Não há contas corrente cadastradas')
-                    else:
-                        numero = input('Número da conta que deseja excluir: ')
-                        if len(numero) != 5:
-                            print('Número inválido')
-                        else:
-                            c = ContaCorrente(numero)
-                            contasC.pop(c.conta)
-                            print('Conta excluída com sucesso')
-                            del(c)
+                    if f.ExisteContaCadastrada(contasC,tipoConta):
+                        numero = input(msg.MSG_CONTA_PARA_EXCLUIR)
+                        if f.EhContaValida(numero):
+                            if f.ExisteConta(numero, contasC):
+                                c = ContaCorrente(numero)
+                                contasC.pop(c.conta)
+                                print(msg.MSG_SUCESSO_EXCLUIR)
+                                del(c)
                 case 2:
-                    if len(contasS) == 0:
-                        print('Não há contas cadastradas')
-                    else:
-                        numero = input('Número da conta que deseja excluir: ')
-                        if len(numero) != 5:
-                            print('Número inválido')
-                        else:
-                            if not numero in contasS:
-                                print('Conta inexistente')
-                            else:
+                    if f.ExisteContaCadastrada(contasS,tipoConta):
+                        numero = input(msg.MSG_CONTA_PARA_EXCLUIR)
+                        if f.EhContaValida(numero):
+                            if f.ExisteConta(numero, contasS):
                                 c = ContaSalario(numero)
                                 contasS.pop(c.conta)
-                                print('Conta excluída com sucesso')
+                                print(msg.MSG_SUCESSO_EXCLUIR)
                                 del(c)
                 case outraCaso:
-                    if len(contasP == 0):
-                        print('Não há contas poupança cadastradas')
-                    else:
-                        numero = input('Número da conta que deseja excluir: ')
-                        if len(numero) != 5:
-                            print('Número inválido')
-                        else:
-                            if not numero in contasP:
-                                print('Conta inexistente')
-                            else:
+                    if f.ExisteContaCadastrada(contasP,tipoConta):
+                        numero = input(msg.MSG_CONTA_PARA_EXCLUIR)
+                        if f.EhContaValida(numero):
+                            if f.ExisteConta(numero, contasP):                           
                                 c = ContaPoupanca(numero)
                                 contasP.pop(c.conta)
-                                print('Conta excluída com sucesso')
+                                print(msg.MSG_SUCESSO_EXCLUIR)
                                 del(c)
                     f.aguardaLimpa()
         case 4:
             tipoConta = f.validaTipoConta()
+            f.limpaTela()
             match tipoConta:
-                case 1,3:
+                case 1:# Conta corrente
                     op = f.menuOperacoes(tipoConta)
                     match op:
-                        case 1:
-                            pass
-                        case 2:
-                            pass
+                        case 1:#Sacar
+                            numero = int(input(msg.MSG_NUMERO_CONTA))
+                            if f.ExisteConta(numero,contasC):
+                                valor = int(input(msg.MSG_VALOR_SAQUE))
+                                if f.ExisteSaldo(numero,contasC,tipoConta,valor):
+                                    contasC[numero] -= (valor + (valor * 0.05))
+                                    print(msg.MSG_SUCESSO_SAQUE)
+                        case 2:#Deposito
+                            numero = input(msg.MSG_NUMERO_CONTA)
+                            if f.EhContaValida(numero): 
+                                if f.ExisteConta(numero,contasC):
+                                    valor = int(input(msg.MSG_VALOR_DEPOSITO))
+                                    contasC[numero] += valor
+                                    print(msg.MSG_SUCESSO_DEPOSITO)
+                        case 3:#Transferência
+                            numero = input(msg.MSG_NUMERO_CONTA)
+                            if f.EhContaValida(numero):
+                                if f.ExisteConta(numero,contasC):
+                                    numeroDest = input(msg.MSG_NUMERO_CONTA_DESTINO)
+                                    tipoDestino = f.validaTipoConta()
+                                    if f.ExisteConta(numeroDest,tipoDestino):
+                                        valor = (msg.MSG_VALOR_TRANSFERENCIA)
+                                        if f.ExisteSaldo(numero,contasC,tipoConta,valor):
+                                            contasC[numero] -= valor
+
+                                            match tipoDestino:
+                                                case 1:
+                                                    
+                                                    if f.ExisteConta(numeroDest,contasC):
+                                                        valor = int(input(msg.MSG_VALOR_TRANSFERENCIA))
+                                                        if ExisteSaldo(numero,contasC,tipoConta,valor):
+                                                            contasC[numero] -= valor
+                                                            contasC[numeroDest] += valor
+                                                case 2:
+                                                    if f.ExisteConta(numeroDest,contasS):
+                                                        valor = int(input(msg.MSG_VALOR_TRANSFERENCIA))
+                                                        if f.ExisteSaldo(numero,contasC,tipoConta,valor):
+                                                            contasC[numero] -= valor
+                                                            contasS[numeroDest] += valor
+                                                case outraCaso:
+                                                    if f.ExisteConta(numeroDest,contasP):
+                                                        valor = int(input(msg.MSG_VALOR_TRANSFERENCIA))
+                                                        if f.ExisteSaldo(numero,contasC,tipoConta,valor):
+                                                            contasC[numero] -= valor
+                                                            contasP[numeroDest] += valor
+                                                    
+                                            f.limpaTela()
+                                            print(msg.MSG_SUCESSO_TRANSFERENCIA)
+                                            f.aguardaLimpa()
+                
+
+        case outraOpcao:# Conta poupança
+            op = input(msg.MSG_NUMERO_CONTA)
+            if f.EhContaValida(numero):
+                if f.ExisteConta(numero,contasC):
+                    match op:
+                        case 1:#Sacar
+                            valor = int(input(msg.MSG_VALOR_SAQUE))
+                            
+                        case 2:#Depositar
+                            valor = int(input(msg.MSG_VALOR_DEPOSITO))
+                            
                         case 3:
-                            pass
+                            valor = int(input(msg.MSG_VALOR_TRANSFERENCIA))
                         case 4:
-                            pass
+                            numero = input(msg.MSG_NUMERO_CONTA)
+                            if f.EhContaValida(numero):
+                                if f.ExisteConta(numero,contasP):
+                                    print(contasP[numero])
                         case outraCaso:
                             break
 
-                case 2:
-                    op = f.menuOperacoes(tipoConta)
-                case outraCaso:
-                    op = f.menuOperacoes(tipoConta)
-
-                    match op:
-                        case 1:
-                            pass
-                        case 2:
-                            pass
-                        case outraCaso:
-                            break
+                    
         case 5:
-            print('Obrigado por usar o sistema')
+            print(msg.MSG_ENCERRA_SISTEMA)
             f.aguardaLimpa()
             break
         case outraCaso:
-            print('Opção inválida')
+            print(msg.MSG_OPCAO_INVALIDA)
             f.aguardaLimpa()
                     
 
